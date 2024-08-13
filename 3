@@ -1,0 +1,27 @@
+version: '3.7'  # Corrected typo here
+
+networks:
+  iopex_network:
+    external: true
+
+services:  # Corrected typo here
+  api:
+    image: cioiopex/cioirise:0.0
+    restart: always
+    ports:
+      - "8070:8080"
+    env_file:
+      - .env
+    volumes:
+      - ./models:/models:cached
+      - ./images/:/tmp/generated/images/
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              device_ids: ['1']
+              capabilities: [gpu]
+
+    networks:
+      - iopex_network
